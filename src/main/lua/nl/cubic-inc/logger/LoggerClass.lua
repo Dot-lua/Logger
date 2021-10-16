@@ -21,7 +21,7 @@ function Logger:initialize(Settings)
 	Settings = Settings or {}
     Settings.Debug = Settings.Debug or false
 
-    self.Debug = Settings.Debug
+    self.DebugMode = Settings.Debug
 end
 
 do -- parse config
@@ -59,7 +59,9 @@ function Logger:Info(Msg, ...)
 end
 
 function Logger:Debug(Msg, ...)
-	Logger:Log(4, Msg, ... or "")
+	if self.DebugMode == true then
+		Logger:Log(4, Msg, ... or "")
+	end
 end
 
 return Logger

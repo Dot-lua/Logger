@@ -40,7 +40,7 @@ return {
     Icon = "", -- Icon for the package, not used normally but can be used by some projects
     Environment = "*",
     Entrypoints = {
-        Main = "ga.cubicinc.logger.Test"
+        Main = "nl.cubic-inc.logger.Test"
     }
 
 }
