@@ -1,4 +1,4 @@
-local Logger = Class:extend()
+local Logger = Emitter:extend()
 
 local date = os.date
 local format = string.format
@@ -32,12 +32,10 @@ do -- parse config
 end
 
 
-function Logger:Log(level, msg, ...)
+function Logger:Log(level, msg)
 
 	local tag = config[level]
 	if not tag then return end
-
-	--msg = format(msg, ...)
 
 	local d = date("%Y-%m-%d %H:%M:%S")
 	stdout:write(format('[%s] %s: %s\n', d, tag[2], msg))
@@ -46,21 +44,25 @@ function Logger:Log(level, msg, ...)
 
 end
 
-function Logger:Error(Msg, ...)
-	Logger:Log(1, Msg, ... or "")
+function Logger:Error(Msg)
+	self:Log(1, Msg)
+	self:emit("Error", Msg)
 end
 
-function Logger:Warn(Msg, ...)
-	Logger:Log(2, Msg, ... or "")
+function Logger:Warn(Msg)
+	self:Log(2, Msg)
+	self:emit("Warning", Msg)
 end
 
-function Logger:Info(Msg, ...)
-	Logger:Log(3, Msg, ... or "")
+function Logger:Info(Msg)
+	self:Log(3, Msg)
+	self:emit("Information", Msg)
 end
 
-function Logger:Debug(Msg, ...)
+function Logger:Debug(Msg)
 	if self.DebugMode == true then
-		Logger:Log(4, Msg, ... or "")
+		self:Log(4, Msg)
+		self:emit("Debug", Msg)
 	end
 end
 
