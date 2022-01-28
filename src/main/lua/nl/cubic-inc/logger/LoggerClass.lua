@@ -20,8 +20,12 @@ local config = {
 function Logger:initialize(Settings)
 	Settings = Settings or {}
     Settings.Debug = Settings.Debug or false
+	Settings.Out = Settings.Out or function (self, Text)
+		return stdout:write(Text .. "\n")
+	end
 
     self.DebugMode = Settings.Debug
+	self.Out = Settings.Out
 end
 
 do -- parse config
@@ -38,7 +42,7 @@ function Logger:Log(level, msg)
 	if not tag then return end
 
 	local d = date("%Y-%m-%d %H:%M:%S")
-	stdout:write(format('[%s] %s: %s\n', d, tag[2], msg))
+	self:Out(format('[%s] %s: %s', d, tag[2], msg))
 
 	return msg
 
